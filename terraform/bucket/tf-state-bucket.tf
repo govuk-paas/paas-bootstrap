@@ -4,10 +4,11 @@ variable "state_bucket" {
 
 resource "aws_s3_bucket" "terraform-state-s3" {
   bucket = var.state_bucket
+  force_destroy = true
 
-  lifecycle {
-    prevent_destroy = true
-  }
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
 }
 
 resource "aws_s3_bucket_ownership_controls" "terraform-state-s3" {
