@@ -1,8 +1,8 @@
+---
 regions:
   - global
   - eu-west-1
   - eu-west-2
-  - us-east-1
 
 blocklist:
   - "402547999344" # production
@@ -12,6 +12,12 @@ blocklist:
 
 accounts:
   "595665891067": # dev
+    presets:
+      - team-access-iam
+      - cloudtrail
+
+presets:
+  team-access-iam:
     filters:
       IAMRole:
         - Admin
@@ -28,15 +34,32 @@ accounts:
         - property: RoleName
           value: PowerUser
       IAMPolicy:
-        - RequireOfficeIP
-        - type: glob
-          value: "Operator*"
+        - property: Name
+          type: exact
+          value: RequireOfficeIP
+        - property: Name
+          type: glob
+          value: Operator*
+        - property: Name
+          type: glob
+          value: Common*
       IAMRolePolicy:
         - type: glob
-          value: "Operator*"
+          value: Operator*
+  cloudtrail:
+    filters:
+      S3Bucket:
+        - property: Name
+          type: exact
+          value: dev-paas-cloudtrail
 
 resource-types:
   excludes:
+    - CloudTrailTrail
+    - GuardDutyDetector
+    - BedrockModelCustomizationJob
+    - QuickSightUser
+    - QuickSightSubscription
     - AWS::Timestream::Database
     - AWS::Timestream::ScheduledQuery
     - AWS::Timestream::Table
