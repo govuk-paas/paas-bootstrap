@@ -1,0 +1,92 @@
+---
+regions:
+  - global
+  - eu-west-1
+  - eu-west-2
+
+blocklist:
+  - "402547999344" # production
+  - "595665891067" # dev
+  - "913207178573" # staging
+  - "622626885786" # gds-users
+
+accounts:
+  "977752845943": # CI
+    presets:
+      - team-access-iam
+      - cloudtrail
+
+presets:
+  team-access-iam:
+    filters:
+      IAMRole:
+        - Admin
+        - Operator
+        - ReadOnly
+        - PowerUser
+      IAMRolePolicyAttachment:
+        - property: RoleName
+          value: Admin
+        - property: RoleName
+          value: Operator
+        - property: RoleName
+          value: ReadOnly
+        - property: RoleName
+          value: PowerUser
+      IAMPolicy:
+        - property: Name
+          type: exact
+          value: RequireOfficeIP
+        - property: Name
+          type: glob
+          value: Operator*
+      IAMRolePolicy:
+        - type: glob
+          value: Operator*
+  cloudtrail:
+    filters:
+      S3Bucket:
+        - property: Name
+          type: exact
+          value: ci-paas-cloudtrail
+
+resource-types:
+  excludes:
+    - CloudTrailTrail
+    - GuardDutyDetector
+    - BedrockModelCustomizationJob
+    - AWS::Timestream::Database
+    - AWS::Timestream::ScheduledQuery
+    - AWS::Timestream::Table
+    - ElasticTranscoderPipeline
+    - ElasticTranscoderPreset
+    - S3Object # Excluded because S3 bucket removal handles removing all S3Objects
+    - ServiceCatalogTagOption # Excluded due to https://github.com/rebuy-de/aws-nuke/issues/515
+    - ServiceCatalogTagOptionPortfolioAttachment # Excluded due to https://github.com/rebuy-de/aws-nuke/issues/515
+    - FMSNotificationChannel # Excluded because it's not available
+    - FMSPolicy # Excluded because it's not available
+    - MachineLearningMLModel # Excluded due to ML being unavailable
+    - MachineLearningDataSource # Excluded due to ML being unavailable
+    - MachineLearningBranchPrediction # Excluded due to ML being unavailable
+    - MachineLearningEvaluation # Excluded due to ML being unavailable
+    - RoboMakerDeploymentJob # Deprecated Service
+    - RoboMakerFleet # Deprecated Service
+    - RoboMakerRobot # Deprecated Service
+    - RoboMakerSimulationJob
+    - RoboMakerRobotApplication
+    - RoboMakerSimulationApplication
+    - OpsWorksApp # Deprecated service
+    - OpsWorksInstance # Deprecated service
+    - OpsWorksLayer # Deprecated service
+    - OpsWorksUserProfile # Deprecated service
+    - OpsWorksCMBackup # Deprecated service
+    - OpsWorksCMServer # Deprecated service
+    - OpsWorksCMServerState # Deprecated service
+    - CodeStarProject # Deprecated service
+    - CodeStarConnection # Deprecated service
+    - CodeStarNotification # Deprecated service
+    - Cloud9Environment # Deprecated service
+    - CloudSearchDomain # Deprecated service
+    - RedshiftServerlessSnapshot # Deprecated service
+    - RedshiftServerlessNamespace # Deprecated service
+    - RedshiftServerlessWorkgroup # Deprecated service
