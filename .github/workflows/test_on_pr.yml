@@ -56,7 +56,7 @@ jobs:
           go install github.com/alphagov/paas-cf/tools/pipecleaner@main
 
       - name: Install Ruby
-        uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
+        uses: ruby/setup-ruby@44511735964dcb71245e7e55f72539531f7bc0eb
         with:
           ruby-version: "${{env.RUBY_VERSION}}"
 
